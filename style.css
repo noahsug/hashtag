@@ -13,3 +13,8 @@ div {
   width: 300px;
   font-size: 24px;
 }
+
+em {
+  font-weight: 700;
+  font-style: normal;
+}
