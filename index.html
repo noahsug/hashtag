@@ -4,7 +4,7 @@
   <link href="style.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-  <a href="javascript:document.activeElement.value = 'noah sugarman';void(0);">
+  <a href="javascript:(function(){window.addEventListener(function(e) {  if (e.which == '51' && e.shiftKey) {    maybeHashtagify();  }});var maybeHashtagify = function() {  var inputText = document.activeElement.value;  if (inputText) {    var outputText = '#' + inputText;    document.activeElement.value = outputText;  }}})();void(0);">
     <img src="hashtag.png" alt="#">
   </a>
   <div>
