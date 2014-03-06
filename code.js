@@ -1,1 +1,1 @@
-console.log('noahsugarman');
+window.addEventListener(function(e){console.log(e);});
