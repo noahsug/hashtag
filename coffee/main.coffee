@@ -2,7 +2,7 @@ global.main =
 
   run: ->
     window.addEventListener 'keydown', (e) ->
-      if e.which is '51' && e.shiftKey
+      if e.which is 51 && e.shiftKey
         @hashtagify();
 
   hashtagify: ->

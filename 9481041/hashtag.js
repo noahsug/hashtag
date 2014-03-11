@@ -1,7 +1,7 @@
 var main = {
   run: function() {
     return window.addEventListener('keydown', function(e) {
-      if (e.which === '51' && e.shiftKey) {
+      if (e.which === 51 && e.shiftKey) {
         return this.hashtagify();
       }
     });
