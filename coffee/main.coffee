@@ -11,7 +11,7 @@ global.main =
       caret: document.activeElement.selectionStart
     bounds = @getHashtagBounds(inputTextInfo)
     if bounds.start < bounds.end
-      outputTextInfo = @getHashtaggedText(bounds, inputTextInfo)
+      outputTextInfo = @getHashtaggedText(inputTextInfo, bounds)
       @updateDom(outputTextInfo)
 
   getHashtagBounds: (textInfo) ->
@@ -23,8 +23,11 @@ global.main =
     bounds.end = bounds.start + preCaretText.length
     return bounds
 
-  getHashtaggedText: (bounds, textInfo) ->
-    return textInfo
+  getHashtaggedText: (textInfo, bounds) ->
+    outputTextInfo = {}
+    outputTextInfo.text = textInfo.text.replace(/\s/g, '')
+    outputTextInfo.caret = bounds.start + outputTextInfo.text.length
+    return outputTextInfo
 
   updateDom: (textInfo) ->
     setTimeout ->

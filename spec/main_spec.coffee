@@ -8,6 +8,6 @@ describe 'hashtag', ->
     document.activeElement.selectionStart = 'sup guy?'.length
     main.hashtagify()
     runs ->
-      expect(document.activeElement.value).toBe 'sup guy?'
-      expect(document.activeElement.selectionStart).toBe 'sup guy?'.length
-      expect(document.activeElement.selectionEnd).toBe 'sup guy?'.length
+      expect(document.activeElement.value).toBe 'supguy?'
+      expect(document.activeElement.selectionStart).toBe 'supguy?'.length
+      expect(document.activeElement.selectionEnd).toBe 'supguy?'.length
