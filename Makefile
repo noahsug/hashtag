@@ -1,8 +1,8 @@
 all:
 	-rm -r bin
 	mkdir bin
-	coffee -cmo bin coffee
-	coffee -cmo bin nodejs_to_web
+	coffee -cbo bin coffee
+	coffee -cbo bin nodejs_to_web
 
 test:
 	jasmine-node --coffee spec/
