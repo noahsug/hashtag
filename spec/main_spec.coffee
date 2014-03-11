@@ -1,4 +1,4 @@
-require './nodejs_to_web.coffee'
+require '../nodejs_to_web/polyfill.coffee'
 require '../coffee/main.coffee'
 
 describe 'hashtag', ->
