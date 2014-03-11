@@ -25,7 +25,7 @@ global.main =
 
   getHashtaggedText: (textInfo, bounds) ->
     outputTextInfo = {}
-    outputTextInfo.text = textInfo.text.replace(/\s/g, '')
+    outputTextInfo.text = '#' + textInfo.text.replace(/\s/g, '')
     outputTextInfo.caret = bounds.start + outputTextInfo.text.length
     return outputTextInfo
 

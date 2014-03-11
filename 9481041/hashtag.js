@@ -2,7 +2,7 @@ var main = {
   run: function() {
     return window.addEventListener('keydown', function(e) {
       if (e.which === 51 && e.shiftKey) {
-        return this.hashtagify();
+        return main.hashtagify();
       }
     });
   },
@@ -12,10 +12,10 @@ var main = {
       text: document.activeElement.value,
       caret: document.activeElement.selectionStart
     };
-    bounds = this.getHashtagBounds(inputTextInfo);
+    bounds = main.getHashtagBounds(inputTextInfo);
     if (bounds.start < bounds.end) {
-      outputTextInfo = this.getHashtaggedText(inputTextInfo, bounds);
-      return this.updateDom(outputTextInfo);
+      outputTextInfo = main.getHashtaggedText(inputTextInfo, bounds);
+      return main.updateDom(outputTextInfo);
     }
   },
   getHashtagBounds: function(textInfo) {
@@ -30,7 +30,7 @@ var main = {
   getHashtaggedText: function(textInfo, bounds) {
     var outputTextInfo;
     outputTextInfo = {};
-    outputTextInfo.text = textInfo.text.replace(/\s/g, '');
+    outputTextInfo.text = '#' + textInfo.text.replace(/\s/g, '');
     outputTextInfo.caret = bounds.start + outputTextInfo.text.length;
     return outputTextInfo;
   },
