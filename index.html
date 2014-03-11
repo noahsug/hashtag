@@ -4,11 +4,11 @@
   <link href="style.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-  <a href="javascript:(function(){window.addEventListener('keydown', function(e) {  if (e.which == '51' && e.shiftKey) {    maybeHashtagify();  }});var maybeHashtagify = function() {  var inputTextInfo = {    text: document.activeElement.value,    caret: document.activeElement.selectionStart  };  if (shouldHashtagify(inputTextInfo)) {    var outputTextInfo = hashtagify(inputTextInfo);    updateDom(outputTextInfo);  }};var shouldHashtagify = function(textInfo) {  return textInfo.text[textInfo.caret - 1] != ' ' && textInfo.caret > 0;};var hashtagify = function(textInfo) {  var outputTextInfo = {};  var preCaretText = textInfo.text.substring(0, textInfo.caret);  var postCaretText = textInfo.text.substring(textInfo.caret);  var preCaretWords = preCaretText.split(' ');  var hashtag = '';  var hashtaggedWordCount = 0;  for (var i = preCaretWords.length - 1; i >= 0; i--) {    word = preCaretWords[i];    if (word[0] == '#') {      break;    }    word = word.toLowerCase();    hashtag = word + hashtag;    hashtaggedWordCount++;  }  if (hashtaggedWordCount > 0) {    hashtag = '#' + hashtag;    var preHashtagWords = preCaretWords.splice(0,        preCaretWords.length - hashtaggedWordCount);    var preHashtagText = preHashtagWords.length > 0 ?        preHashtagWords.join(' ') + ' ' : '';    var preCaretOutputText = preHashtagText + hashtag;    outputTextInfo.hashtag = hashtag;    outputTextInfo.text = preCaretOutputText + postCaretText;    outputTextInfo.caret = preCaretOutputText.length;    return outputTextInfo;  } else {    return textInfo;  }};var updateDom = function(textInfo) {  setTimeout(function() {    document.activeElement.value = textInfo.text;    document.activeElement.selectionStart = textInfo.caret;    document.activeElement.selectionEnd = textInfo.caret;  }, 0);};})();void(0);">
+  <a href="javascript:(function(){document.body.appendChild(document.createElement('script')).src = 'https://gist.github.com/noahsug/9481041.js';})();void(0);">
     <img src="hashtag.png" alt="#">
   </a>
   <div>
-    <em>Drag the hashtag</em> to your <em>bookmarks</em> bar. Click the bookmark to quickly hashtag whatever you're typing!
+    <em>Drag the hashtag</em> to your <em>bookmarks</em> bar and click the bookmark on the page where you want to enable it. Press '#' to quickly hashtag previously typed words (don't add a space beforehand the '#')!
   </div>
 </body>
 </html>
