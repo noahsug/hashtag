@@ -45,7 +45,7 @@ var main = {
     };
   },
   formHashtag: function(text) {
-    text = text.replace(/[\s,#;:'"]/g, '');
+    text = text.replace(/[\s,;:'"]/g, '');
     text = text.replace(/[.?!](?!$)/g, '');
     text = text.toLowerCase();
     return text = '#' + text;
