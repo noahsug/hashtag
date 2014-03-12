@@ -26,9 +26,9 @@ describe 'hashtag bookmarklet', ->
   it 'hashtags text', ->
     expect('puppies|').toHashtagifyTo('#puppies|')
 
-  it 'removes whitespace, quotes, punctuation, hashtags and caps', ->
+  it 'removes whitespace, quotes, punctuation and caps', ->
     expect('"Oh...", said B#o#b.  That was silly#|').
-        toHashtagifyTo('#ohsaidbobthatwassilly|')
+        toHashtagifyTo('#ohsaidb#o#bthatwassilly#|')
 
   it 'does not remove terminating punctuation', ->
     expect('oh! you there?|').toHashtagifyTo('#ohyouthere?|')

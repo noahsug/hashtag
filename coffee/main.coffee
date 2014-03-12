@@ -35,7 +35,7 @@ global.main =
     }
 
   formHashtag: (text) ->
-    text = text.replace(/[\s,#;:'"]/g, '') # remove misc chars
+    text = text.replace(/[\s,;:'"]/g, '') # remove misc chars
     text = text.replace(/[.?!](?!$)/g, '') # remove non-terminating punctuation
     text = text.toLowerCase()
     text = '#' + text;
