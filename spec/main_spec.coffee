@@ -8,15 +8,19 @@ describe 'hashtag bookmarklet', ->
 
     @addMatchers
       toHashtagifyTo: (expected) ->
-        document.activeElement.value = @actual.replace('|', '')
-        document.activeElement.selectionEnd = @actual.indexOf('|')
+        document.activeElement.value = @actual.replace(/\|/g, '')
+        document.activeElement.selectionStart = @actual.indexOf('|')
+        document.activeElement.selectionEnd = @actual.lastIndexOf('|')
 
         main.hashtagify()
         jasmine.Clock.tick(1);
 
-        caret = document.activeElement.selectionEnd
+        caretStart = document.activeElement.selectionStart
+        caretEnd = document.activeElement.selectionEnd
         text = document.activeElement.value
-        result = main.spliceStr(text, caret, caret, '|')
+        result = main.spliceStr(text, caretEnd, caretEnd, '|')
+        if caretStart isnt caretEnd
+          result = main.spliceStr(result, caretStart, caretStart, '|')
 
         @message = ->
           return 'Expected "' + @actual + '" to hashtagify to "' + expected +
@@ -45,3 +49,6 @@ describe 'hashtag bookmarklet', ->
   it 'does not hashtagify other hashtags', ->
     expect('#lolol i love cake|').toHashtagifyTo('#lolol #ilovecake|')
     expect('oh #hey there guy| #bob').toHashtagifyTo('oh #hey #thereguy| #bob')
+
+  it 'does not hashtagify a text selection', ->
+    expect('oh! |you there?|').toHashtagifyTo('oh! |you there?|')

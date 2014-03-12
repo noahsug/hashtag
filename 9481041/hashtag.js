@@ -8,9 +8,13 @@ var main = {
   },
   hashtagify: function() {
     var bounds, inputTextInfo, outputTextInfo;
+    if (document.activeElement.selectionStart !== document.activeElement.selectionEnd) {
+      return;
+    }
     inputTextInfo = {
       text: document.activeElement.value,
-      caret: document.activeElement.selectionEnd
+      caretStart: document.activeElement.selectionStart,
+      caretEnd: document.activeElement.selectionEnd
     };
     bounds = main.getHashtagBounds(inputTextInfo);
     if (bounds.start < bounds.end) {
@@ -19,19 +23,19 @@ var main = {
     }
   },
   getHashtagBounds: function(textInfo) {
-    var lastHashtagDistance, preCaretText, singleLine, split;
-    preCaretText = textInfo.text.substring(0, textInfo.caret);
-    if (/\s$/.test(preCaretText)) {
+    var lastHashtagDistance, singleLine, split, text;
+    text = textInfo.text.substring(0, textInfo.caretEnd);
+    if (/\s$/.test(text)) {
       return {};
     }
-    singleLine = (split = preCaretText.split('\n'))[split.length - 1];
+    singleLine = (split = text.split('\n'))[split.length - 1];
     lastHashtagDistance = main.reverseStr(singleLine).search(/\s*\S+#(\s|$)/);
     if (lastHashtagDistance === -1) {
       lastHashtagDistance = singleLine.length;
     }
     return {
-      start: preCaretText.length - lastHashtagDistance,
-      end: preCaretText.length
+      start: textInfo.caretEnd - lastHashtagDistance,
+      end: textInfo.caretEnd
     };
   },
   getHashtaggedText: function(textInfo, bounds) {
@@ -41,7 +45,8 @@ var main = {
     output = main.spliceStr(textInfo.text, bounds.start, bounds.end, hashtag);
     return {
       text: output,
-      caret: bounds.start + hashtag.length
+      caretStart: bounds.start + hashtag.length,
+      caretEnd: bounds.start + hashtag.length
     };
   },
   formHashtag: function(text) {
@@ -53,8 +58,8 @@ var main = {
   updateDom: function(textInfo) {
     return setTimeout(function() {
       document.activeElement.value = textInfo.text;
-      document.activeElement.selectionStart = textInfo.caret;
-      return document.activeElement.selectionEnd = textInfo.caret;
+      document.activeElement.selectionStart = textInfo.caretEnd;
+      return document.activeElement.selectionEnd = textInfo.caretEnd;
     }, 0);
   },
   spliceStr: function(str, start, end, add) {

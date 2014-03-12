@@ -6,23 +6,26 @@ global.main =
         @hashtagify();
 
   hashtagify: ->
+    return if document.activeElement.selectionStart isnt
+        document.activeElement.selectionEnd
     inputTextInfo =
       text: document.activeElement.value,
-      caret: document.activeElement.selectionEnd
+      caretStart: document.activeElement.selectionStart
+      caretEnd: document.activeElement.selectionEnd
     bounds = @getHashtagBounds(inputTextInfo)
     if bounds.start < bounds.end
       outputTextInfo = @getHashtaggedText(inputTextInfo, bounds)
       @updateDom(outputTextInfo)
 
   getHashtagBounds: (textInfo) ->
-    preCaretText = textInfo.text.substring(0, textInfo.caret)
-    return {} if /\s$/.test(preCaretText) # can't start with a space
-    singleLine = (split = preCaretText.split('\n'))[split.length - 1]
+    text = textInfo.text.substring(0, textInfo.caretEnd)
+    return {} if /\s$/.test(text) # can't start with a space
+    singleLine = (split = text.split('\n'))[split.length - 1]
     lastHashtagDistance = @reverseStr(singleLine).search /\s*\S+#(\s|$)/
     lastHashtagDistance = singleLine.length if lastHashtagDistance is -1
     return {
-      start: preCaretText.length - lastHashtagDistance
-      end: preCaretText.length
+      start: textInfo.caretEnd - lastHashtagDistance
+      end: textInfo.caretEnd
     }
 
   getHashtaggedText: (textInfo, bounds) ->
@@ -31,7 +34,8 @@ global.main =
     output = @spliceStr(textInfo.text, bounds.start, bounds.end, hashtag)
     return {
       text: output
-      caret: bounds.start + hashtag.length
+      caretStart: bounds.start + hashtag.length
+      caretEnd: bounds.start + hashtag.length
     }
 
   formHashtag: (text) ->
@@ -43,8 +47,8 @@ global.main =
   updateDom: (textInfo) ->
     setTimeout ->
       document.activeElement.value = textInfo.text
-      document.activeElement.selectionStart = textInfo.caret
-      document.activeElement.selectionEnd = textInfo.caret
+      document.activeElement.selectionStart = textInfo.caretEnd
+      document.activeElement.selectionEnd = textInfo.caretEnd
     , 0
 
   spliceStr: (str, start, end, add) ->
