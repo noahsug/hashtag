@@ -10,7 +10,7 @@ var main = {
     var bounds, inputTextInfo, outputTextInfo;
     inputTextInfo = {
       text: document.activeElement.value,
-      caret: document.activeElement.selectionStart
+      caret: document.activeElement.selectionEnd
     };
     bounds = main.getHashtagBounds(inputTextInfo);
     if (bounds.start < bounds.end) {
@@ -19,20 +19,36 @@ var main = {
     }
   },
   getHashtagBounds: function(textInfo) {
-    var bounds, postCaretText, preCaretText;
-    bounds = {};
+    var lastHashtagDistance, preCaretText, singleLine, split;
     preCaretText = textInfo.text.substring(0, textInfo.caret);
-    postCaretText = textInfo.text.substring(textInfo.caret);
-    bounds.start = 0;
-    bounds.end = bounds.start + preCaretText.length;
-    return bounds;
+    if (/\s$/.test(preCaretText)) {
+      return {};
+    }
+    singleLine = (split = preCaretText.split('\n'))[split.length - 1];
+    lastHashtagDistance = main.reverseStr(singleLine).search(/\s*\S+#(\s|$)/);
+    if (lastHashtagDistance === -1) {
+      lastHashtagDistance = singleLine.length;
+    }
+    return {
+      start: preCaretText.length - lastHashtagDistance,
+      end: preCaretText.length
+    };
   },
   getHashtaggedText: function(textInfo, bounds) {
-    var outputTextInfo;
-    outputTextInfo = {};
-    outputTextInfo.text = '#' + textInfo.text.replace(/\s/g, '');
-    outputTextInfo.caret = bounds.start + outputTextInfo.text.length;
-    return outputTextInfo;
+    var hashtag, output, textToHashtag;
+    textToHashtag = textInfo.text.substring(bounds.start, bounds.end);
+    hashtag = main.formHashtag(textToHashtag);
+    output = main.spliceStr(textInfo.text, bounds.start, bounds.end, hashtag);
+    return {
+      text: output,
+      caret: bounds.start + hashtag.length
+    };
+  },
+  formHashtag: function(text) {
+    text = text.replace(/[\s,#;:'"]/g, '');
+    text = text.replace(/[.?!](?!$)/g, '');
+    text = text.toLowerCase();
+    return text = '#' + text;
   },
   updateDom: function(textInfo) {
     return setTimeout(function() {
@@ -40,6 +56,12 @@ var main = {
       document.activeElement.selectionStart = textInfo.caret;
       return document.activeElement.selectionEnd = textInfo.caret;
     }, 0);
+  },
+  spliceStr: function(str, start, end, add) {
+    return str.slice(0, start) + add + str.slice(end);
+  },
+  reverseStr: function(str) {
+    return str.split('').reverse().join('');
   }
 };
 
