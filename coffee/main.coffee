@@ -20,7 +20,7 @@ global.main =
   getHashtagBounds: (textInfo) ->
     text = textInfo.text.substring(0, textInfo.caretEnd)
     return {} if /\s$/.test(text) # can't start with a space
-    singleLine = (split = text.split('\n'))[split.length - 1]
+    singleLine = text.split('\n')[-1..][0] # get the last line of text
     lastHashtagDistance = @reverseStr(singleLine).search /\s*\S+#(\s|$)/
     lastHashtagDistance = singleLine.length if lastHashtagDistance is -1
     return {

@@ -30,6 +30,10 @@ describe 'hashtag bookmarklet', ->
   it 'hashtags text', ->
     expect('puppies|').toHashtagifyTo('#puppies|')
 
+  it 'does not hashtag when there is no text', ->
+    expect('|').toHashtagifyTo('|')
+    expect('|whatwhat').toHashtagifyTo('|whatwhat')
+
   it 'removes whitespace, quotes, punctuation and caps', ->
     expect('"Oh...", said B#o#b.  That was silly#|').
         toHashtagifyTo('#ohsaidb#o#bthatwassilly#|')
@@ -40,15 +44,15 @@ describe 'hashtag bookmarklet', ->
   it 'properly moves the caret when hashtagging mid-sentance', ->
     expect('hey there| guy').toHashtagifyTo('#heythere| guy')
 
-  it 'does not hashtagify after a space', ->
+  it 'does not hashtag after a space', ->
     expect('hey there |guy').toHashtagifyTo('hey there |guy')
 
   it 'hashtagifies only the current line', ->
     expect('oh\nhey there|').toHashtagifyTo('oh\n#heythere|')
 
-  it 'does not hashtagify other hashtags', ->
+  it 'does not hashtag other hashtags', ->
     expect('#lolol i love cake|').toHashtagifyTo('#lolol #ilovecake|')
     expect('oh #hey there guy| #bob').toHashtagifyTo('oh #hey #thereguy| #bob')
 
-  it 'does not hashtagify a text selection', ->
+  it 'does not hashtag text selection', ->
     expect('oh! |you there?|').toHashtagifyTo('oh! |you there?|')

@@ -23,12 +23,12 @@ var main = {
     }
   },
   getHashtagBounds: function(textInfo) {
-    var lastHashtagDistance, singleLine, split, text;
+    var lastHashtagDistance, singleLine, text;
     text = textInfo.text.substring(0, textInfo.caretEnd);
     if (/\s$/.test(text)) {
       return {};
     }
-    singleLine = (split = text.split('\n'))[split.length - 1];
+    singleLine = text.split('\n').slice(-1)[0];
     lastHashtagDistance = main.reverseStr(singleLine).search(/\s*\S+#(\s|$)/);
     if (lastHashtagDistance === -1) {
       lastHashtagDistance = singleLine.length;
